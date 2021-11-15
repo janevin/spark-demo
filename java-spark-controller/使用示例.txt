@@ -1,0 +1,17 @@
+POST: localhost:8079/extract/database
+{
+    "dbType": "mysql",
+    "url": "jdbc:mysql://localhost:3306/spark-demo",
+    "username": "root",
+    "password": "123456",
+    "table": "demo",
+    "targetFileType": "json",
+    "targetFilePath": "/datasource/",
+    "jarPath": "hdfs://localhost:9000/etl/spark-job.jar",
+    "mainClass": "com.lz.etl.DbTableEtl",
+    "deployMode": "client",
+    "master": "yarn",
+    "driverMemory": "1g",
+    "executorMemory": "1g",
+    "executorCores": 1
+}
