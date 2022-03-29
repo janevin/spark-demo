@@ -1,11 +1,11 @@
-package com.lz.demo
-
-import java.sql.{Connection, DriverManager, PreparedStatement, ResultSet}
+package com.lz.demo.rdd.mysql
 
 import org.apache.spark.rdd.JdbcRDD
 import org.apache.spark.{SparkConf, SparkContext}
 
-object RddMysqlOperate {
+import java.sql.{Connection, DriverManager, PreparedStatement, ResultSet}
+
+object MysqlOperate {
     def main(args: Array[String]): Unit = {
         val conf = new SparkConf().setAppName("Simple Application").setMaster("local")
         val sc = new SparkContext(conf)

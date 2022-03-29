@@ -1,9 +1,9 @@
-package com.lz.demo
-
-import java.util
+package com.lz.demo.dstream.kafka
 
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 import org.apache.kafka.common.serialization.StringSerializer
+
+import java.util
 
 object KafkaProducer {
     def main(args: Array[String]): Unit = {

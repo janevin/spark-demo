@@ -1,8 +1,8 @@
-package com.lz.demo
+package com.lz.demo.dstream.socket
 
 import org.apache.spark.{SparkConf, SparkContext}
 
-object StreamingSocket {
+object Socket {
     def main(args: Array[String]): Unit = {
         val conf = new SparkConf().setAppName("Simple Application").setMaster("local[2]")
         val sc = new SparkContext(conf)
@@ -16,5 +16,4 @@ object StreamingSocket {
         ssc.start()
         ssc.awaitTermination()
     }
-
 }
