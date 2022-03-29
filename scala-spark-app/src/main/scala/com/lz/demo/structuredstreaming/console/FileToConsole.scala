@@ -1,4 +1,4 @@
-package com.lz.demo.structuredstreaming
+package com.lz.demo.structuredstreaming.console
 
 import org.apache.spark.sql.types.{IntegerType, StringType, StructType}
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
@@ -16,14 +16,14 @@ object FileToConsole {
             .option("sep", ",")
             .option("header", "false")
             .schema(schema)
-            .load("data/input/")            // 流式读取当前工程data/input目录下的csv文件
+            .load("data/input/") // 流式读取当前工程data/input目录下的csv文件
 
         df.printSchema()
 
         df.writeStream
             .format("console")
             .outputMode("append")
-            .option("truncate", false)
+            .option("truncate", "false")
             .start()
             .awaitTermination()
 

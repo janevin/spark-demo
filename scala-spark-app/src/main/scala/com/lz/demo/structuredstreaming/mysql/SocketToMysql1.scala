@@ -1,8 +1,8 @@
-package com.lz.demo.structuredstreaming
+package com.lz.demo.structuredstreaming.mysql
 
-import org.apache.spark.sql.{Dataset, Row, SparkSession}
+import org.apache.spark.sql.{Dataset, Row, SaveMode, SparkSession}
 
-object SocketToMemory {
+object SocketToMysql1 {
     def main(args: Array[String]): Unit = {
         val spark: SparkSession = SparkSession.builder().master("local[*]").appName("SparkSQL")
             .config("spark.sql.shuffle.partitions", "2").getOrCreate()
@@ -23,15 +23,19 @@ object SocketToMemory {
             .sort($"count".desc)
 
         result.writeStream
-            .format("memory")
-            .queryName("t_result")
+            .foreachBatch((ds: Dataset[Row], batchId: Long) => {
+                ds.show()
+                ds.write.mode(SaveMode.Overwrite)
+                    .format("jdbc")
+                    .option("url", "jdbc:mysql://192.168.56.3:3306/demo?useSSL=false")
+                    .option("user", "root")
+                    .option("password", "123456")
+                    .option("dbtable", "word_count")
+                    .save()
+            })
             .outputMode("complete")
             .start()
-
-        while (true) {
-            spark.sql("select * from t_result").show()
-            Thread.sleep(3000)
-        }
+            .awaitTermination()
 
         spark.stop()
     }

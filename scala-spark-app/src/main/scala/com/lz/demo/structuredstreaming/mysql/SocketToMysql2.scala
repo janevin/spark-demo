@@ -1,8 +1,8 @@
-package com.lz.demo.structuredstreaming
+package com.lz.demo.structuredstreaming.mysql
 
 import org.apache.spark.sql.{Dataset, Row, SaveMode, SparkSession}
 
-object SocketToMysql {
+object SocketToMysql2 {
     def main(args: Array[String]): Unit = {
         val spark: SparkSession = SparkSession.builder().master("local[*]").appName("SparkSQL")
             .config("spark.sql.shuffle.partitions", "2").getOrCreate()
@@ -20,20 +20,13 @@ object SocketToMysql {
         val result: Dataset[Row] = ds.flatMap(_.split(" "))
             .groupBy('value)
             .count()
-            .sort($"count".desc)
+            .toDF("word", "count")
+
+        val mysqlSink = new MysqlSink("jdbc:mysql://localhost:3306/demo", "root", "123456")
 
         result.writeStream
-            .foreachBatch((ds: Dataset[Row], batchId: Long) => {
-                ds.show()
-                ds.write.mode(SaveMode.Overwrite)
-                    .format("jdbc")
-                    .option("url", "jdbc:mysql://192.168.56.3:3306/demo?useSSL=false")
-                    .option("user", "root")
-                    .option("password", "123456")
-                    .option("dbtable", "word_count")
-                    .save()
-            })
-            .outputMode("complete")
+            .outputMode("update")
+            .foreach(mysqlSink)
             .start()
             .awaitTermination()
 

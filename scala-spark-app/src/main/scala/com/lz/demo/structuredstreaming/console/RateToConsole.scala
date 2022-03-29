@@ -1,4 +1,4 @@
-package com.lz.demo.structuredstreaming
+package com.lz.demo.structuredstreaming.console
 
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
 
@@ -8,9 +8,9 @@ object RateToConsole {
             .config("spark.sql.shuffle.partitions", "2").getOrCreate()
 
         val df: Dataset[Row] = spark.readStream.format("rate")
-            .option("rowsPerSecond", "10") 		// 每秒生成数据条数
-            .option("rampUpTime", "0s") 		// 每条数据生成间隔时间
-            .option("numPartitions", 2) 		// 分区数
+            .option("rowsPerSecond", "10")    // 每秒生成数据条数
+            .option("rampUpTime", "0s")       // 每条数据生成间隔时间
+            .option("numPartitions", 2)       // 分区数
             .load()
 
         df.printSchema()
@@ -18,7 +18,7 @@ object RateToConsole {
         df.writeStream
             .format("console")
             .outputMode("append")
-            .option("truncate", false)
+            .option("truncate", "false")
             .start()
             .awaitTermination()
 
