@@ -24,9 +24,9 @@ object SocketToConsole {
             .sort($"count".desc)
 
         result.writeStream
-            .format("console")                      // 往控制台写
-            .outputMode("complete")             // 每次将所有的数据写出
-            .trigger(Trigger.ProcessingTime(0))   // 触发时间间隔，0表示尽可能的快
+            .format("console") // 往控制台写
+            .outputMode("complete") // 每次将所有的数据写出
+            .trigger(Trigger.ProcessingTime(0)) // 触发时间间隔，0表示尽可能的快
             .start()
             .awaitTermination()
 

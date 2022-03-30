@@ -1,6 +1,5 @@
 package com.lz.demo.structuredstreaming.console
 
-import org.apache.spark.sql.streaming.Trigger
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 
 object KafkaToConsole {
@@ -28,8 +27,8 @@ object KafkaToConsole {
             .sort($"count".desc)
 
         result.writeStream
-            .format("console")                      // 往控制台写
-            .outputMode("complete")             // 每次将所有的数据写出
+            .format("console") // 往控制台写
+            .outputMode("complete") // 每次将所有的数据写出
             .start()
             .awaitTermination()
 

@@ -1,6 +1,6 @@
 package com.lz.demo.structuredstreaming.mysql
 
-import org.apache.spark.sql.{Dataset, Row, SaveMode, SparkSession}
+import org.apache.spark.sql.{Dataset, Row, SparkSession}
 
 object SocketToMysql2 {
     def main(args: Array[String]): Unit = {

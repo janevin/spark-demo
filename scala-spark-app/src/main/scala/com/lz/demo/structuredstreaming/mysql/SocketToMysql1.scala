@@ -24,6 +24,7 @@ object SocketToMysql1 {
 
         result.writeStream
             .foreachBatch((ds: Dataset[Row], batchId: Long) => {
+                println("batchId: " + batchId)
                 ds.show()
                 ds.write.mode(SaveMode.Overwrite)
                     .format("jdbc")
