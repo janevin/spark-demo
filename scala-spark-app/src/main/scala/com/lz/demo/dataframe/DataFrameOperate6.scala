@@ -74,5 +74,7 @@ object DataFrameOperate6 {
 
         val df = spark.createDataFrame(spark.sparkContext.parallelize(structureData), structureSchema)
         df.printSchema()
+
+        spark.stop()
     }
 }

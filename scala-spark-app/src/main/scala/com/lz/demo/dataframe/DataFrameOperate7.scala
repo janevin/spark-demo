@@ -69,5 +69,7 @@ object DataFrameOperate7 {
                 stddev("bonus").as("stddev_bonus"))
             .where(col("sum_bonus") > 50000)
             .show(false)
+
+        spark.stop()
     }
 }

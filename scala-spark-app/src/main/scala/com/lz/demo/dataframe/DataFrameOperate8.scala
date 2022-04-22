@@ -38,5 +38,7 @@ object DataFrameOperate8 {
         // 控制排序方式，没有指定相应的排序顺序默认都是升序的方式
         df.sort(col("department").asc, col("state").asc).show(false)
         df.orderBy(col("department").asc, col("state").asc).show(false)
+
+        spark.stop()
     }
 }

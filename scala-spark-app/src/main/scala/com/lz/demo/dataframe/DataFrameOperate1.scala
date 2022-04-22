@@ -35,5 +35,7 @@ object DataFrameOperate1 {
         df.drop("first_name", "last_name").show()
         val cols = Seq("first_name", "last_name", "location")
         df.drop(cols: _*).show()
+
+        spark.stop()
     }
 }

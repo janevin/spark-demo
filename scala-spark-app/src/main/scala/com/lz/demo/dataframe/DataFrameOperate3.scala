@@ -51,5 +51,7 @@ object DataFrameOperate3 {
             val gender = row.getString(2)
             println(firstName + ", " + lastName + ", " + salary + ", " + gender)
         })
+
+        spark.stop()
     }
 }

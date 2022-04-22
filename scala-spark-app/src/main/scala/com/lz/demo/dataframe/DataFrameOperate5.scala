@@ -34,5 +34,7 @@ object DataFrameOperate5 {
             expr("stack(3, 'Canada', Canada, 'China', China, 'Mexico', Mexico) as (Country, Total)"))
             .where("Total is not null")
         unPivotDF.show()
+
+        spark.stop()
     }
 }

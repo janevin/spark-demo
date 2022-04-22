@@ -42,6 +42,8 @@ object MysqlOperate {
             mapRow
         )
         readPersonRdd.foreach(println)
+
+        sc.stop()
     }
 
 }

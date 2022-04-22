@@ -36,5 +36,7 @@ object DataFrameOperate10 {
 
         val df4 = df.unionAll(df2)
         df4.show(false)
+
+        spark.stop()
     }
 }

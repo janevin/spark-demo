@@ -43,5 +43,7 @@ object DataFrameOperate2 {
             expr("case when gender = 'M' then 'Male' " +
                 "when gender = 'F' then 'Female' " +
                 "else 'Unknown' end").alias("new_gender")).show()
+
+        spark.stop()
     }
 }

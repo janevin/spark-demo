@@ -91,5 +91,7 @@ object DataFrameOperate9 {
 
         val joinDF2 = spark.sql("select * from emp e inner join dept d on e.emp_dept_id == d.dept_id")
         joinDF2.show(false)
+
+        spark.stop()
     }
 }

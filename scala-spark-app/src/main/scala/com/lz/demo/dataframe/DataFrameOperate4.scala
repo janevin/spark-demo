@@ -39,5 +39,7 @@ object DataFrameOperate4 {
         val dropDisDF = df.dropDuplicates("department", "salary")
         println("Distinct count of department & salary : " + dropDisDF.count())
         dropDisDF.show()
+
+        spark.stop()
     }
 }
