@@ -1,4 +1,4 @@
-import org.apache.sedona.core.formatMapper.shapefileParser.ShapefileReader;
+import org.apache.sedona.core.formatMapper.GeoJsonReader;
 import org.apache.sedona.core.serde.SedonaKryoRegistrator;
 import org.apache.sedona.core.spatialRDD.SpatialRDD;
 import org.apache.sedona.sql.utils.Adapter;
@@ -11,7 +11,7 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.locationtech.jts.geom.Geometry;
 
-public class SparkDemo {
+public class GeojsonReader {
     public static void main(String[] args) {
         SparkSession spark = SparkSession
                 .builder()
@@ -24,17 +24,20 @@ public class SparkDemo {
         SedonaSQLRegistrator.registerAll(spark);
         SedonaVizRegistrator.registerAll(spark);
 
-        readShp(spark);
-        
+        readGeojson(spark);
+
         spark.stop();
     }
 
-    private static void readShp(SparkSession spark) {
-        String inputPath = System.getProperty("user.dir") + "/data/states";
-        SpatialRDD<Geometry> rdd = ShapefileReader.readToGeometryRDD(new JavaSparkContext(spark.sparkContext()), inputPath);
+    private static void readGeojson(SparkSession spark) {
+        String inputPath = System.getProperty("user.dir") + "/data/geojson/demo.geojson";
 
-        Dataset<Row> rawDF = Adapter.toDf(rdd, spark);
-        rawDF.show();
-        rawDF.printSchema();
+        boolean allowTopologyInvalidGeometries = true;
+        boolean skipSyntaxInvalidGeometries = false;
+        SpatialRDD<Geometry> rdd = GeoJsonReader.readToGeometryRDD(new JavaSparkContext(spark.sparkContext()), inputPath, allowTopologyInvalidGeometries, skipSyntaxInvalidGeometries);
+
+        Dataset<Row> rawDf = Adapter.toDf(rdd, spark);
+        rawDf.show();
+        rawDf.printSchema();
     }
 }
