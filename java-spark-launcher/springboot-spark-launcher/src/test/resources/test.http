@@ -1,0 +1,21 @@
+POST http://localhost:8079/submit
+Content-Type: application/json
+
+{
+  "appName": "demo",
+  "master": "local",
+  "appResource": "hdfs://192.168.56.4:9000/demo/spark-demo.jar",
+  "mainClass": "com.lz.demo.App",
+  "verbose": true,
+  "conf": {
+    "spark.executor.memory": "1G",
+    "spark.driver.memory": "1G",
+    "spark.executor.cores": "1",
+    "spark.executor.instances": "1"
+  },
+  "appArgs": [
+    "hello"
+  ]
+}
+
+###
