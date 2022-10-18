@@ -30,7 +30,8 @@ object Analyzer {
             .option("header", "true")
             .load("data/titanic.csv")
 
-        val analysisResult = AnalysisRunner
+        val analysisResult = {
+            AnalysisRunner
             .onData(df)
             .addAnalyzer(ApproxQuantiles("Age", quantiles = Seq(0.1, 0.5, 0.9))) // Age字段分布的近似分位数
             .addAnalyzer(Completeness("Age")) // Age字段非空的比例
@@ -43,10 +44,25 @@ object Analyzer {
             .addAnalyzer(Size()) // 记录数
             .addAnalyzer(PatternMatch("Name", pattern = raw".*Anna.*".r)) // 符合正则表达式的记录比例
             .run()
+          }
 
         val analysisResultDf = AnalyzerContext.successMetricsAsDataFrame(spark, analysisResult)
         analysisResultDf.show(false)
 
+        
+// +-------+--------+-------------+------------------+
+// |entity |instance|name         |value             |
+// +-------+--------+-------------+------------------+
+// |Column |Name    |PatternMatch |0.0               |
+// |Column |Age     |Completeness |0.0               |
+// |Dataset|*       |Size         |891.0             |
+// |Column |Fare    |Maximum      |3101298.0         |
+// |Column |Fare    |Minimum      |693.0             |
+// |Column |Fare    |Mean         |260318.54916792738|
+// |Column |Fare    |Sum          |1.72070561E8      |
+// |Column |Age     |CountDistinct|0.0               |
+// +-------+--------+-------------+------------------+
+        
         spark.stop()
     }
 }
