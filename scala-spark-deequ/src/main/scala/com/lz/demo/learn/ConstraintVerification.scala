@@ -11,23 +11,24 @@ object ConstraintVerification {
         val spark: SparkSession = SparkSession.builder().master("local[*]").appName("SparkSQL")
             .getOrCreate()
 
-        val schema = new StructType()
-            .add("PassengerId", IntegerType)
-            .add("Survived", IntegerType)
-            .add("Pclass", IntegerType)
-            .add("Name", StringType)
-            .add("Sex", StringType)
-            .add("Age", IntegerType)
-            .add("SibSp", IntegerType)
-            .add("Parch", IntegerType)
-            .add("Ticket", StringType)
-            .add("Fare", DoubleType)
-            .add("Cabin", StringType)
-            .add("Embarked", StringType)
+val customSchema = StructType(Array(
+    StructField("PassengerId", IntegerType, true),
+    StructField("Survived", IntegerType, true),
+    StructField("Pclass", IntegerType, true),
+    StructField("Name", StringType, true),
+    StructField("Sex", StringType, true),
+    StructField("Age", IntegerType, true),
+    StructField("SibSp", IntegerType, true),
+    StructField("Parch", IntegerType, true),
+    StructField("Ticket", StringType, true),
+    StructField("Fare", DoubleType, true),
+    StructField("Cabin", StringType, true),
+    StructField("Embarked", StringType, true)))
+
 
         val df = spark.read
             .format("csv")
-            .schema(schema)
+            .schema(customSchema)
             .option("header", "true")
             .load("data/titanic.csv")
 
@@ -48,7 +49,17 @@ object ConstraintVerification {
 
         checkResultsAsDataFrame(spark, verificationResult).show(false)
         VerificationResult.successMetricsAsDataFrame(spark, verificationResult).show(false)
-
+// +-------+-------------------------+------------+---------+
+// |entity |instance                 |name        |value    |
+// +-------+-------------------------+------------+---------+
+// |Column |Name                     |Completeness|1.0      |
+// |Dataset|*                        |Size        |891.0    |
+// |Column |Pclass contained in 1,2,3|Compliance  |1.0      |
+// |Column |Age is non-negative      |Compliance  |1.0      |
+// |Column |Fare                     |Minimum     |693.0    |
+// |Column |Fare                     |Maximum     |3101298.0|
+// |Column |PassengerId              |Uniqueness  |1.0      |
+// +-------+-------------------------+------------+---------+
         spark.stop()
     }
 }
