@@ -10,23 +10,38 @@ object Analyzer {
         val spark: SparkSession = SparkSession.builder().master("local[*]").appName("SparkSQL")
             .getOrCreate()
 
-        val schema = new StructType()
-            .add("PassengerId", IntegerType)
-            .add("Survived", IntegerType)
-            .add("Pclass", IntegerType)
-            .add("Name", StringType)
-            .add("Sex", StringType)
-            .add("Age", IntegerType)
-            .add("SibSp", IntegerType)
-            .add("Parch", IntegerType)
-            .add("Ticket", StringType)
-            .add("Fare", DoubleType)
-            .add("Cabin", StringType)
-            .add("Embarked", StringType)
+//         val schema = new StructType()
+//             .add("PassengerId", IntegerType)
+//             .add("Survived", IntegerType)
+//             .add("Pclass", IntegerType)
+//             .add("Name", StringType)
+//             .add("Sex", StringType)
+//             .add("Age", IntegerType)
+//             .add("SibSp", IntegerType)
+//             .add("Parch", IntegerType)
+//             .add("Ticket", StringType)
+//             .add("Fare", DoubleType)
+//             .add("Cabin", StringType)
+//             .add("Embarked", StringType)
 
+        
+        val customSchema = StructType(Array(
+    StructField("PassengerId", IntegerType, true),
+    StructField("Survived", IntegerType, true),
+    StructField("Pclass", IntegerType, true),
+    StructField("Name", StringType, true),
+    StructField("Sex", StringType, true),
+    StructField("Age", IntegerType, true),
+    StructField("SibSp", IntegerType, true),
+    StructField("Parch", IntegerType, true),
+    StructField("Ticket", StringType, true),
+    StructField("Fare", DoubleType, true),
+    StructField("Cabin", StringType, true),
+    StructField("Embarked", StringType, true)))
+        
         val df = spark.read
             .format("csv")
-            .schema(schema)
+            .schema(customSchema)
             .option("header", "true")
             .load("data/titanic.csv")
 
